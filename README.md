@@ -1,36 +1,175 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bollinger Bands Indicator
 
-## Getting Started
+A professional-grade Bollinger Bands technical analysis tool built with Next.js, TypeScript, and KLineCharts. Features a TradingView-inspired interface with real-time parameter adjustments and interactive charting capabilities.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Complete Bollinger Bands Implementation** with customizable parameters
+- **Professional Settings Panel** with separate Inputs and Style configuration tabs
+- **Real-time Chart Updates** when adjusting any parameter
+- **Interactive Crosshair Tooltips** displaying OHLCV data and Bollinger values
+- **Fully Customizable Styling** including colors, line styles, and fill opacity
+- **Modern Dark Theme** optimized for financial data visualization
+- **Type-Safe TypeScript** implementation throughout
+
+## Quick Start
+
+### Prerequisites
+- Node.js 16+ 
+- npm or yarn package manager
+
+### Installation
+
+1. **Clone or download the project**
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+3. **Start development server**:
+   ```bash
+   npm run dev
+   ```
+4. **Open in browser**: Navigate to `http://localhost:3000`
+
+
+
+## Usage
+
+### Adding Bollinger Bands
+1. Click the **"Add Bollinger Bands"** button
+2. Configure parameters in the **Inputs** tab:
+   - **Length**: Period for moving average calculation (1-100)
+   - **Source**: Price source (Close, Open, High, Low)
+   - **StdDev Multiplier**: Standard deviation multiplier (0.1-10.0)
+   - **Offset**: Shift bands by number of bars (-50 to +50)
+
+### Customizing Appearance
+1. Switch to the **Style** tab
+2. Configure each band (Upper, Basis, Lower):
+   - Toggle visibility
+   - Select colors
+   - Adjust line width (1-4px)
+   - Choose line style (solid/dashed)
+3. Configure background fill opacity
+
+### Chart Interaction
+- **Hover**: View detailed OHLCV and indicator values
+- **Zoom**: Mouse wheel to zoom in/out
+- **Pan**: Click and drag to navigate
+- **Real-time Updates**: All changes reflect immediately
+
+## Technical Specifications
+
+### Bollinger Bands Formula
+- **Basis (Middle Band)**: Simple Moving Average of source price
+- **Upper Band**: Basis + (Multiplier × Standard Deviation)
+- **Lower Band**: Basis - (Multiplier × Standard Deviation)
+- **Standard Deviation**: Sample standard deviation (N-1 denominator)
+
+### Default Parameters
+- Length: 20 periods
+- Source: Close price
+- StdDev Multiplier: 2.0
+- Offset: 0 bars
+
+## Data Format
+
+The application expects OHLCV data in JSON format:
+
+```json
+[
+  {
+    "timestamp": 1640995200000,
+    "open": 46222.05,
+    "high": 47143.98,
+    "low": 45637.54,
+    "close": 46306.45,
+    "volume": 28394.55
+  }
+]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Dependencies
 
-## Learn More
+### Core Dependencies
+- **Next.js 14+**: React framework
+- **React 18+**: UI library
+- **TypeScript**: Type safety
+- **TailwindCSS**: Utility-first CSS framework
+- **KLineCharts v9.8.5**: Professional charting library
 
-To learn more about Next.js, take a look at the following resources:
+### Dev Dependencies
+- TypeScript compiler
+- ESLint configuration
+- PostCSS for Tailwind processing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Browser Support
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
 
-## Deploy on Vercel
+## Performance
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Optimized for datasets with 200-1000 candles
+- Real-time parameter updates with minimal latency
+- Efficient memory usage with proper cleanup
+- Smooth interactions at 60fps
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Customization
+
+### Adding MA Types
+Extend the indicator by modifying `lib/indicators/bollinger.ts` to support EMA, WMA, or other moving averages.
+
+### Theme Customization
+Update color schemes in `tailwind.config.js` and component styling.
+
+### Additional Indicators
+The chart architecture supports adding more technical indicators following the established pattern.
+
+## API Reference
+
+### BollingerBands Component Props
+```typescript
+interface BollingerBandsSettings {
+  length: number;           // Period length (1-100)
+  source: 'close' | 'open' | 'high' | 'low';
+  stddevMultiplier: number; // Multiplier (0.1-10.0)
+  offset: number;          // Bar offset (-50 to +50)
+  visible: boolean;        // Show/hide indicator
+  // Style properties for each band...
+}
+```
+
+### Chart Component Props
+```typescript
+interface ChartProps {
+  data: OHLCVData[];       // OHLCV candle data
+  bollinger?: BollingerBandsSettings;
+  onBollingerChange?: (settings: BollingerBandsSettings) => void;
+}
+```
+
+## Known Limitations
+
+- Mobile touch interactions may need optimization for production use
+- Large datasets (>1000 candles) may experience slight performance degradation
+- Currently supports SMA only (EMA/WMA can be added as enhancement)
+
+## License
+
+MIT License - See LICENSE file for details
+
+## Support
+
+For technical questions or integration support:
+- Review the [KLineCharts documentation](https://klinecharts.com/en-US/)
+- Check [Next.js documentation](https://nextjs.org/docs)
+- Refer to [TailwindCSS documentation](https://tailwindcss.com/docs)
+
+---
+
+**Built with ❤️ for professional financial data visualization**
